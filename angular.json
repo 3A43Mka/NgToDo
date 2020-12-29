@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "NgToDo"
+  "defaultProject": "NgToDo",
+  "cli": {
+    "analytics": "efbb7d40-2c5f-469d-a342-b192e2153fcc"
+  }
 }
