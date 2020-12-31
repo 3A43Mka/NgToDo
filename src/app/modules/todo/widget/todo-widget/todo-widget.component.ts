@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Todo } from '../../model/todo';
-import { TodoCreateAction, TodoDeleteAction, TodoToggleAction } from '../../store/todo.actions';
+import { TodoSyncStorageService } from '../../service/todo-sync-storage.service';
+import { TodoCreateAction, TodoDeleteAction, TodoEditAction, TodoToggleAction } from '../../store/todo.actions';
 import {TodoState} from '../../store/todo.reducer';
 import { todoListSelector } from '../../store/todo.selectors';
 
@@ -15,9 +16,13 @@ export class TodoWidgetComponent implements OnInit {
 
     todoList$: Observable<Todo[]> = this.store$.pipe(select(todoListSelector));
 
-    constructor(private store$: Store<TodoState>) {}
+    constructor(
+        private store$: Store<TodoState>,
+        private todoSyncStorage: TodoSyncStorageService
+        ) {}
 
     ngOnInit() {
+        this.todoSyncStorage.init();
     }
 
     onCreate(name: string) {
@@ -30,5 +35,9 @@ export class TodoWidgetComponent implements OnInit {
 
     onToggle(id: number) {
         this.store$.dispatch(new TodoToggleAction({ id }));
+    }
+
+    onEdit({id, name}){
+        this.store$.dispatch(new TodoEditAction({ id, name }));
     }
 }
